@@ -1,4 +1,4 @@
-![Norbert](https://github.office.opendns.com/bfox/norbert/raw/master/images/logo.png)
+![Norbert](https://github.com/nullfox/norbert/raw/master/images/logo.png)
 
 Norbert
 ========
@@ -7,7 +7,7 @@ Norbert
 ### Installation
 
 ```
-npm install --save git://github.office.opendns.com/bfox/norbert
+npm install --save norbert
 ```
 
 ### Resource-based one-file server example
