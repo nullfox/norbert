@@ -1,0 +1,41 @@
+{
+  "name": "norbert",
+  "version": "0.0.1",
+  "description": "An opinionated NodeJS framework built on top of Hapi",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run lint",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:nullfox/norbert.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^2.9.24",
+    "boom": "^2.7.0",
+    "bunyan": "^1.3.5",
+    "class-extend": "^0.1.1",
+    "colors": "^1.0.3",
+    "good": "^6.1.0",
+    "good-console": "^5.0.0",
+    "hapi": "^8.4.0",
+    "joi": "^6.2.0",
+    "lodash": "^3.6.0",
+    "lout": "^6.2.2",
+    "node-uuid": "^1.4.3"
+  },
+  "devDependencies": {
+    "chai": "^2.2.0",
+    "gulp": "^3.8.11",
+    "gulp-debug": "^2.0.1",
+    "gulp-eslint": "^0.9.0",
+    "gulp-mocha": "^2.0.1",
+    "mocha": "^2.2.4",
+    "sinon": "^1.14.1"
+  },
+  "readme": "![Norbert](https://github.com/nullfox/norbert/raw/master/images/logo.png)\n\nNorbert\n========\n*The awesome 90s themed framework build on top of Hapi*\n\n### Installation\n\n```\nnpm install --save norbert\n```\n\n### Resource-based one-file server example\n\n```\nvar Norbert = require('norbert'),\n    Ecosystem = require('models/ecosystem');\n\n// Each type CRUD operation has a corresponding Norbert.Resource.* class\nvar read = Norbert.Resource.Read.factory(\n    {\n        // Validate route params, in this case /1.0/beavers/{beaverId} as a required integer\n        params: {\n            beaverId: Norbert.Joi.number().integer().required()\n        }\n    },\n    \n    // You can return absolute values or promise chains!\n    // 404s are automatically handled if a null value or resolving promise returns null in Read resources\n    function handler(request) {\n        return Ecosystem.findBeaver(request.params.beaverId);\n    }\n);\n\nvar readCollection = Norbert.Collection.factory(\n    // Override the global default limit per endpoint\n    {\n        defaultLimit: 100\n    },\n    \n    // Limit and page are resolved automatically\n    function handler(request) {\n        return Ecosystem.findBeavers({\n            limit: request.query.limit,\n            page: request.query.page\n        });\n    }\n);\n\nvar create = Norbert.Resource.Create.factory(\n    {\n        // Validate the payload automagically\n        payload: {\n            name: Norbert.Joi.string().required(),\n            favoriteWoodSpecies: Norbert.Joi.string().only('spruce', 'redwood', 'cedar'),\n            age: Norbert.Joi.number().integer().required()\n        }\n    },\n    \n    // All return values that implement a toEndpoint method will be automatically triggered and used as the return value\n    function handler(request) {\n        return Ecosystem.addBeaver(request.payload);\n    }\n);\n\nvar beaver = {\n    Read: read,\n    ReadCollection: readCollection,\n    Create: create  \n};\n\nvar server = Norbert.Server.factory();\n\nserver.addResource('/1.0/beavers/{beaverId}', beaver);\n\nserver.start()\n.then(function () {\n    console.log('Server started!');\n})\n.catch(function (err) {\n    console.log('Server could not be started', err);\n});\n```\n\n### Simple route-based one-file server example\n\n```\nvar Norbert = require('norbert'),\n    Ecosystem = require('models/ecosystem');\n\n// Each type CRUD operation has a corresponding Norbert.Resource.* class\nvar read = Norbert.Resource.Read.factory(\n    {\n        // Validate route params, in this case /1.0/beavers/{beaverId} as a required integer\n        params: {\n            beaverId: Norbert.Joi.number().integer().required()\n        }\n    },\n    \n    // You can return absolute values or promise chains!\n    // 404s are automatically handled if a null value or resolving promise returns null in Read resources\n    function handler(request) {\n        return Ecosystem.findBeaver(request.params.beaverId);\n    }\n);\n\nvar server = Norbert.Server.factory();\n\nserver.addRoute('/1.0/beavers/{beaverId}', read);\n\nserver.start()\n.then(function () {\n    console.log('Server started!');\n})\n.catch(function (err) {\n    console.log('Server could not be started', err);\n});\n```",
+  "readmeFilename": "README.md"
+}
