@@ -7,6 +7,6 @@ module.exports = Norbert.Collection.factory(
   },
 
   function handler (request) {
-    return Report.all();
+    return Report.all(request.params.reportId);
   }
 );

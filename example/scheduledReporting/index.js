@@ -1,4 +1,5 @@
 var Norbert = require('../../index');
+var Report = require('./models/report');
 
 // Set the defaul logger
 Norbert.Server.setLogger(require('bunyan').createLogger({
@@ -16,5 +17,15 @@ Norbert
   	{
   		parentResource: 'organization'
   	}
+  )
+  .addResource(
+  	'/1.0/organizations/{organizationId}/reports/{reportId}/states/{stateId}',
+    [
+      Norbert.Collection.factory(
+        function (request) {
+          return Report.all(request.params.reportId);
+        }
+      )
+    ]
   )
   .start();

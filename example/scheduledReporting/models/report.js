@@ -48,14 +48,16 @@ Report.findOne = function (options) {
     });
 };
 
-Report.all = Report.findAll = function () {
+Report.all = Report.findAll = function (reportId) {
   return Bluebird.resolve([
   this.factory({
+    reportId: reportId,
     id: 13,
     organizationId: 2,
     frequency: 86400
   }),
   this.factory({
+    reportId: reportId,
     id: 125152,
     organizationId: 510553,
     frequency: 86400
