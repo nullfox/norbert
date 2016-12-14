@@ -1,6 +1,6 @@
 {
   "name": "norbert",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "An opinionated NodeJS framework built on top of Hapi",
   "main": "index.js",
   "scripts": {
